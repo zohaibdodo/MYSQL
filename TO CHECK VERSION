@@ -1,0 +1,8 @@
+To check MySQL version:
+
+mysql -V
+
+
+To Check CentOS Version:
+
+nano/cat /etc/system-release
