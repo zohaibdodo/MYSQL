@@ -1,0 +1,53 @@
+From <http://woshub.com/configure-mariadb-replication/> 
+
+1. MariaDB: Configuration of the First Master Server (Master-1)
+Add the following lines to my.cnf file on your first MariaDB server:
+#replication
+server_id = 1
+report_host = master
+log_bin = /var/lib/mysql/mariadb-bin
+log_bin_index = /var/lib/mysql/mariadb-bin.index
+relay_log = /var/lib/mysql/relay-bin
+relay_log_index = /var/lib/mysql/relay-bin.index
+
+
+service mariadb restart
+Create a user to configure replication:
+mysql
+create user 'test_master'@'%' identified by 'test_master';
+grant replication slave on *.* to 'test_master'@'%';
+To add a Slave, we need to get bin_log data from the Master-1 server:
+MariaDB [(none)]> show master status;
++--------------------+----------+--------------+------------------+
+| File | Position | Binlog_Do_DB | Binlog_Ignore_DB |
++--------------------+----------+--------------+------------------+
+| mariadb-bin.000002 | 664 | | |
++--------------------+----------+--------------+------------------+
+1 row in set (0.000 sec)
+
+2. MariaDB: Configuration of the Second Master Server (Master-2)
+Connect to the second MariaDB server, open the my.cnf file and add the following configuration to it:
+#replication
+server_id = 2
+report_host = master2
+log_bin = /var/lib/mysql/mariadb-bin
+log_bin_index = /var/lib/mysql/mariadb-bin.index
+relay_log = /var/lib/mysql/relay-bin
+relay_log_index = /var/lib/mysql/relay-bin.index
+
+create user 'test_master2'@'%' identified by 'test_master2';
+grant replication slave on *.* to 'test_master2'@'%';
+Get bin_log on Master-2:
+MariaDB [(none)]> show master status;
+
+STOP SLAVE;
+Add Master-1 to the second server:
+CHANGE MASTER TO MASTER_HOST='IP_master1', MASTER_USER='test_master', MASTER_PASSWORD='test_master', MASTER_LOG_FILE='mariadb-bin.000002', MASTER_LOG_POS=664;
+Start the replication:
+START SLAVE;
+Connect to Master-1 and follow the same steps, but specify the information about the second server instead:
+STOP SLAVE;
+CHANGE MASTER TO MASTER_HOST='10.2.10.36', MASTER_USER='test_master2', MASTER_PASSWORD='test_master2', MASTER_LOG_FILE='mariadb-bin.000001', MASTER_LOG_POS=667;
+START SLAVE;
+Check the second server status:
+show slave status \G

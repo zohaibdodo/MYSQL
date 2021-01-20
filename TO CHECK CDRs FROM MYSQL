@@ -1,0 +1,23 @@
+To Check CDRs from 	MYSQL:
+
+SSH to the server
+Type the following commands:
+
+mysql
+List databases:
+
+mysql> show databases;
+Select the CDR DB:
+
+mysql> use asteriskcdrdb;
+List the tables in the database:
+
+mysql> show tables;
+To view the columns:
+
+mysql> describe cdr;
+To view the rows:
+
+mysql> select `src`,`duration`,`dst`FROM`cdr`WHERE`duration` >= 0;
+To CLEAR the CDR Table:
+[code]mysql> delete FROM `cdr` WHERE `duration` >= 0;
