@@ -1,7 +1,9 @@
 From <http://woshub.com/configure-mariadb-replication/> 
 
 1. MariaDB: Configuration of the First Master Server (Master-1)
+
 Add the following lines to my.cnf file on your first MariaDB server:
+
 #replication
 server_id = 1
 report_host = master
@@ -11,11 +13,12 @@ relay_log = /var/lib/mysql/relay-bin
 relay_log_index = /var/lib/mysql/relay-bin.index
 
 
-service mariadb restart
+#service mariadb restart
 Create a user to configure replication:
-mysql
+#mysql
 create user 'test_master'@'%' identified by 'test_master';
 grant replication slave on *.* to 'test_master'@'%';
+
 To add a Slave, we need to get bin_log data from the Master-1 server:
 MariaDB [(none)]> show master status;
 +--------------------+----------+--------------+------------------+
