@@ -1,7 +1,5 @@
 From <http://woshub.com/configure-mariadb-replication/> 
 
-https://www.vpsserver.com/community/tutorials/9/setup-a-master-to-master-replication-between-two-mariadb-servers/
-
 
 1. MariaDB: Configuration of the First Master Server (Master-1)
 
