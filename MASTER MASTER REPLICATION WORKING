@@ -1,0 +1,49 @@
+SERVER A
+
+#vi /etc/my.cnf
+
+##replication
+server_id = 1
+report_host = master
+log_bin = /var/lib/mysql/mariadb-bin
+log_bin_index = /var/lib/mysql/mariadb-bin.index
+relay_log = /var/lib/mysql/relay-bin
+relay_log_index = /var/lib/mysql/relay-bin.index
+
+#mysql
+create user 'test_master'@'%' identified by 'test_master';
+grant replication slave on *.* to 'test_master'@'%';
+show master status;
+
+This process should be done after slave 
+
+STOP SLAVE;
+
+CHANGE MASTER TO MASTER_HOST='10.23.200.5', MASTER_USER='test_master2', MASTER_PASSWORD='test_master2', MASTER_LOG_FILE='mariadb-bin.000001', MASTER_LOG_POS=;
+
+START SLAVE;
+
+SERVER B
+
+vi /etc/my.cnf
+
+##replication
+server_id = 2
+report_host = master2
+log_bin = /var/lib/mysql/mariadb-bin
+log_bin_index = /var/lib/mysql/mariadb-bin.index
+relay_log = /var/lib/mysql/relay-bin
+relay_log_index = /var/lib/mysql/relay-bin.index
+
+#mysql
+create user 'test_master2'@'%' identified by 'test_master2';
+grant replication slave on *.* to 'test_master2'@'%';
+show master status;
+
+STOP SLAVE;
+
+CHANGE MASTER TO MASTER_HOST='10.23.200.4', MASTER_USER='test_master', MASTER_PASSWORD='test_master', MASTER_LOG_FILE='mariadb-bin.000001', MASTER_LOG_POS=;
+
+START SLAVE;
+
+show slave status \G;
