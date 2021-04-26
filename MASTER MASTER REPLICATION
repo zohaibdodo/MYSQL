@@ -14,9 +14,10 @@ relay_log = /var/lib/mysql/relay-bin
 relay_log_index = /var/lib/mysql/relay-bin.index
 
 
-#service mariadb restart
+service mariadb restart
+
 Create a user to configure replication:
-#mysql
+mysql
 create user 'test_master'@'%' identified by 'test_master';
 grant replication slave on *.* to 'test_master'@'%';
 
