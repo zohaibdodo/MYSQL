@@ -1,6 +1,6 @@
 SERVER A
 
-#vi /etc/my.cnf
+vi /etc/my.cnf
 
 ##replication
 server_id = 1
@@ -10,7 +10,9 @@ log_bin_index = /var/lib/mysql/mariadb-bin.index
 relay_log = /var/lib/mysql/relay-bin
 relay_log_index = /var/lib/mysql/relay-bin.index
 
-#mysql
+service mariadb restart
+
+mysql
 create user 'test_master'@'%' identified by 'test_master';
 grant replication slave on *.* to 'test_master'@'%';
 show master status;
