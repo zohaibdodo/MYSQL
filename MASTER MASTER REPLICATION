@@ -18,6 +18,7 @@ service mariadb restart
 
 Create a user to configure replication:
 mysql
+
 create user 'test_master'@'%' identified by 'test_master';
 grant replication slave on *.* to 'test_master'@'%';
 
@@ -56,3 +57,6 @@ CHANGE MASTER TO MASTER_HOST='10.2.10.36', MASTER_USER='test_master2', MASTER_PA
 START SLAVE;
 Check the second server status:
 show slave status \G
+
+
+https://www.ryadel.com/en/mysql-master-master-replication-setup-in-5-easy-steps/
