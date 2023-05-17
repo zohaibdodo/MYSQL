@@ -1,25 +1,5 @@
-mysqlcheck -c -u root -p --all-databases --auto-repair
-
-
+mysqlcheck -u root -p --auto-repair --check --all-databases ---------- command working 
 
 #service mysqld stop
 rm -rf /var/lib/mysql/mysql.sock
 service mysqld start
-
-
-
-mysqlcheck -u root -p --auto-repair --check --all-databases ---------- command working 
-
-password: nil------------- for HO_4
-
-
-
-mysqlcheck -c -u root -p --all-databases --auto-repair
-
-service mysqld stop
-rm -rf /var/lib/mysql/mysql.sock
-service mysqld start
-
-mysqlcheck -u root -p --auto-repair --check --all-databases ---------- command working 
-
-password: nil------------- for HO_4
